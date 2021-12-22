@@ -9,16 +9,17 @@ CUDA_DEVICE_NUM = 0
 
 ##########################################################################################
 # Path Config
-
 import os
 import sys
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# sys.path.insert(0, "..")  # for problem_def
+# sys.path.insert(0, "../..")  # for utils
+
 from CVRPEnv import CVRPEnv as Env
 from CVRPModel import CVRPModel as Model
 from utils.utils import *
 import torch
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, "..")  # for problem_def
-sys.path.insert(0, "../..")  # for utils
 
 
 ##########################################################################################
@@ -37,6 +38,12 @@ aug_factor = 1
 #     aug_factor = tester_params['aug_factor']
 # else:
 #     aug_factor = 1
+
+# env_params = {
+#     'problem_size': 20,
+#     'pomo_size': 20,
+# }
+
 
 env_params = {
     'problem_size': 20,
@@ -98,29 +105,29 @@ with torch.no_grad():
     model.pre_forward(reset_state)
 
 # plot
-#
-# plot_param = 20
-#
-# time_h = 4*10*24
-# time_m = 60
-#
-# depot = np.array(reset_state.depot_xy).reshape(2)
-# node = np.array(reset_state.node_xy).reshape(plot_param,2)
-#
-# node_x_ori = node[:,0]
-# node_y_ori = node[:,1]
-#
-# node_x = node[:,0]*time_h
-# node_y = node[:,1]*time_m
-# plt.scatter(depot[0],depot[1], color = 'r' )
-# plt.scatter(node_x_ori,node_y_ori)
-# plt.annotate(f"start",xy = (depot[0],depot[1]))
-# for i in range(len(node)):
-#     # plt.annotate(f"{i}th point",xy = (node_x[i],node_y[i]))
-#     plt.annotate(f"{node_x[i]}h{node_y[i]}m", xy=(node_x[i], node_y[i]))
-#     # plt.annotate(f"{i}th point {lenth[0][i]:.2f}",xy = (node_x[i],node_y[i]))
-# # plt.title(f'{total_len}')
-# plt.show()
+
+plot_param = 20
+
+time_h = 4*10*24
+time_m = 60
+
+depot = np.array(reset_state.depot_xy).reshape(2)
+node = np.array(reset_state.node_xy).reshape(plot_param,2)
+
+node_x_ori = node[:,0]
+node_y_ori = node[:,1]
+
+node_x = node[:,0]*time_h
+node_y = node[:,1]*time_m
+plt.scatter(depot[0],depot[1], color = 'r' )
+plt.scatter(node_x_ori,node_y_ori)
+plt.annotate(f"start",xy = (depot[0],depot[1]))
+for i in range(len(node)):
+    # plt.annotate(f"{i}th point",xy = (node_x[i],node_y[i]))
+    plt.annotate(f"{node_x[i]}h{node_y[i]}m", xy=(node_x[i], node_y[i]))
+    # plt.annotate(f"{i}th point {lenth[0][i]:.2f}",xy = (node_x[i],node_y[i]))
+# plt.title(f'{total_len}')
+plt.show()
 # POMO Rollout
 ###############################################
 state, reward, done = env.pre_step()
